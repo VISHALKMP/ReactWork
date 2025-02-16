@@ -1,39 +1,59 @@
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 
 function UserInput({ addRecord }) {
-  const rollRef = useRef(null);
+  // Creating references for input fields
+  const rollNumberRef = useRef(null);
   const nameRef = useRef(null);
   const genderRef = useRef(null);
   const branchRef = useRef(null);
-  const branchList = ["IT", "CS", "Mech", "CV"];
 
+  // List of available branches
+  const branches = ["IT", "CS", "Mech", "CV"];
+
+  // Function to handle adding a new record
   const handleAddRecord = () => {
-    const roll = rollRef.current.value;
-    const name = nameRef.current.value;
+    // Get values from input fields
+    const rollNumber = rollNumberRef.current.value.trim();
+    const name = nameRef.current.value.trim();
     const gender = genderRef.current.value;
     const branch = branchRef.current.value;
-    if (roll && name && gender !== "0" && branch !== "0") {
-      const newRecord = { roll, name, branch, gender };
-      console.log("New Record:", newRecord);
+
+    // Check if all fields are filled correctly
+    if (rollNumber && name && gender !== "0" && branch !== "0") {
+      // Create a new record object
+      const newRecord = {
+        rollNumber,
+        name,
+        gender,
+        branch,
+      };
+
+      console.log("New Record:", newRecord); // Debugging output
+
+      // Call the function to add the record
       addRecord(newRecord);
-      rollRef.current.value = "";
+
+      // Clear input fields after submission
+      rollNumberRef.current.value = "";
       nameRef.current.value = "";
-      genderRef.current.value = "0";
-      branchRef.current.value = "0";
+      genderRef.current.value = "0"; // Reset dropdown
+      branchRef.current.value = "0"; // Reset dropdown
     } else {
       alert("Please fill in all the fields.");
     }
   };
+
   return (
     <>
       <div className="container my-3">
+        {/* Input for Roll Number and Name */}
         <div className="row my-3">
           <div className="col-md-6">
             <input
-              ref={rollRef}
+              ref={rollNumberRef}
               className="form-control"
               type="text"
-              placeholder="Enter your Roll No"
+              placeholder="Enter Roll Number"
             />
           </div>
           <div className="col-md-6">
@@ -41,22 +61,24 @@ function UserInput({ addRecord }) {
               ref={nameRef}
               className="form-control"
               type="text"
-              placeholder="Enter your Name"
+              placeholder="Enter Name"
             />
           </div>
         </div>
+
+        {/* Dropdowns for Gender and Branch */}
         <div className="row my-3">
           <div className="col-md-6">
-            <select ref={genderRef} className="form-control" name="Gender">
+            <select ref={genderRef} className="form-control">
               <option value="0">Select Gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
             </select>
           </div>
           <div className="col-md-6">
-            <select ref={branchRef} className="form-control" name="branch">
-              <option value="0">Select branch</option>
-              {branchList.map((branch, index) => (
+            <select ref={branchRef} className="form-control">
+              <option value="0">Select Branch</option>
+              {branches.map((branch, index) => (
                 <option key={index} value={branch}>
                   {branch}
                 </option>
@@ -65,12 +87,15 @@ function UserInput({ addRecord }) {
           </div>
         </div>
       </div>
+
+      {/* Submit Button */}
       <div className="mt-3 text-center">
         <button onClick={handleAddRecord} className="btn btn-success">
-          ADD
+          Add Record
         </button>
       </div>
     </>
   );
 }
+
 export default UserInput;
